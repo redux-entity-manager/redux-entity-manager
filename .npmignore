@@ -1,0 +1,17 @@
+.DS_Store
+
+.idea
+.vscode
+
+/coverage
+/docs
+/examples
+/node_modules
+/src
+
+/.travis.yml
+/tsconfig.json
+/tslint.json
+
+yarn-debug.log*
+yarn-error.log*

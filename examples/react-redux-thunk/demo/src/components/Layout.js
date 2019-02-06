@@ -1,0 +1,166 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link, Redirect, Route, Switch, withRouter } from 'react-router-dom';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+
+import { entitiesSelector, makeReadThunk } from '../utils';
+
+import { ConnectedForm } from './form/Form';
+import { Grid } from './grid/Grid';
+import { readStatusSelector, Status } from 'redux-entity-manager';
+
+const makeUserSlug = name => {
+    return name
+        ? name.split(' ').map(s => s.toLowerCase()).join('-')
+        : '';
+};
+
+const postGridColumns = [
+    {
+        key: 'id',
+        label: 'ID',
+    },
+    {
+        key: 'title',
+        label: 'Title',
+    },
+    {
+        key: 'userId',
+        label: 'User',
+        entityName: 'user',
+        query: item => ({ id: item.userId }),
+        labelKey: 'name',
+    },
+];
+
+const postFormFields = [
+    {
+        key: 'id',
+        label: 'ID',
+        readonly: true,
+    },
+    {
+        key: 'title',
+        label: 'Title',
+    },
+    {
+        key: 'userId',
+        label: 'User',
+        entityName: 'user',
+        query: null,
+        labelKey: 'name',
+    },
+];
+
+const userGridColumns = [
+    {
+        key: 'id',
+        label: 'ID',
+        readonly: true,
+    },
+    {
+        key: 'name',
+        label: 'Name',
+    },
+];
+
+const userFormFields = [
+    {
+        key: 'id',
+        label: 'ID',
+    },
+    {
+        key: 'name',
+        label: 'Name',
+    },
+];
+
+const navigateToUser = props => user => props.history.push(`/users/${user.id}`);
+
+const navigateToPost = props => post => props.history.push(`/posts/${post.id}`);
+
+class Layout extends Component {
+
+    componentDidMount() {
+        this.props.readUsers();
+    }
+
+    render() {
+        const { users, status } = this.props;
+        return (
+            <div>
+                <AppBar position="static">
+                    <Toolbar>
+                        <Button color="inherit" component={Link} to="/users">
+                            All Users
+                        </Button>
+                        <Button color="inherit" component={Link} to="/posts">
+                            All Posts
+                        </Button>
+                        {users.slice(0, 5).map((user, i) => {
+                            return <Button key={i} color="inherit" component={Link} to={`/posts/${makeUserSlug(user.name)}`}>
+                                {user.name}'s posts
+                            </Button>;
+                        })}
+                    </Toolbar>
+                </AppBar>
+                <main>
+                    {status === Status.SUCCESS && <Switch>
+                        <Route
+                            path="/posts"
+                            exact={true}
+                            render={props => <Grid {...props} entityName="post" query={null} columns={postGridColumns} onDoubleClick={navigateToPost(props)} />}
+                        />
+                        {users.map((user, i) => {
+                            return <Route
+                                key={i}
+                                path={`/posts/${makeUserSlug(user.name)}`}
+                                exact={true}
+                                render={props => <Grid {...props} entityName="post" query={{ userId: user.id }} columns={postGridColumns} onDoubleClick={navigateToPost(props)} />}
+                            />;
+                        })}
+                        <Route
+                            path="/posts/create"
+                            exact={true}
+                            render={() => <ConnectedForm entityName="post" query={null} fields={postFormFields} />}
+                        />
+                        <Route
+                            path="/posts/:id"
+                            exact={true}
+                            render={({ match }) => <ConnectedForm entityName="post" query={{ id: match.params.id }} fields={postFormFields} />}
+                        />
+                        <Route
+                            path="/users"
+                            exact={true}
+                            render={props => <Grid {...props} entityName="user" query={null} columns={userGridColumns} onDoubleClick={navigateToUser(props)} />}
+                        />
+                        <Route
+                            path="/users/create"
+                            exact={true}
+                            render={() => <ConnectedForm entityName="user" query={null} fields={userFormFields} />}
+                        />
+                        <Route
+                            path="/users/:id"
+                            exact={true}
+                            render={({ match }) => <ConnectedForm entityName="user" query={{ id: match.params.id }} fields={userFormFields} />}
+                        />
+                        <Redirect to="/posts" />
+                    </Switch>}
+                </main>
+            </div>
+        );
+    }
+}
+
+const makeMapState = () => state => ({
+    users: entitiesSelector(state, { entityName: 'user', query: null }),
+    status: readStatusSelector(state, { entityName: 'user', query: null }),
+});
+
+const makeMapDispatch = () => dispatch => ({
+    readUsers: () => dispatch(makeReadThunk('user', null)),
+});
+
+export const ConnectedLayout = withRouter(connect(makeMapState, makeMapDispatch)(Layout));

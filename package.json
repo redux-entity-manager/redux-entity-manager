@@ -1,0 +1,37 @@
+{
+    "author": "Dmitri Maltsev <dmitri.maltsev@hotmail.com>",
+    "description": "Easy domain entity managenent with Redux",
+    "devDependencies": {
+        "@types/jest": "^23.3.9",
+        "jest": "^23.6.0",
+        "ts-jest": "^23.10.4",
+        "tslint": "^5.11.0",
+        "typescript": "^3.1.4"
+    },
+    "jest": {
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js",
+            "jsx"
+        ],
+        "roots": [
+            "<rootDir>/src"
+        ],
+        "testRegex": "\\.spec\\.ts$",
+        "transform": {
+            "^.+\\.tsx?$": "ts-jest"
+        }
+    },
+    "license": "MIT",
+    "main": "build/index.js",
+    "name": "redux-entity-manager",
+    "repository": "https://github.com/github:redux-entity-manager/redux-entity-manager",
+    "scripts": {
+        "build": "tsc",
+        "lint": "tslint --project .",
+        "test": "jest"
+    },
+    "types": "build/index.d.ts",
+    "version": "0.0.2"
+}
