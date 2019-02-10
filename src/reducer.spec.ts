@@ -1,14 +1,11 @@
 import {
     makeReadRequestAction,
     makeReadSuccessAction,
-    makeUpdateRequestAction,
-    makeUpdateSuccessAction,
-    Action,
 } from './actions';
 
 import {
-    makeEntityReducer,
     Config,
+    makeEntityReducer,
     State,
     Status,
 } from './reducer';

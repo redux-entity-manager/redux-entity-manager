@@ -36,5 +36,5 @@
         "start:server": "json-server db.js --port 8080",
         "test": "react-scripts test"
     },
-    "version": "0.0.1"
+    "version": "0.0.3"
 }
