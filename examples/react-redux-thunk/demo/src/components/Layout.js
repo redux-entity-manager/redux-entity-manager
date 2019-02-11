@@ -1,19 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect, Route, Switch, withRouter } from 'react-router-dom';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
+import {
+    AppBar,
+    Avatar,
+    Button,
+    Chip,
+    Toolbar,
+} from '@material-ui/core';
+
+import { readStatusSelector, Status } from 'redux-entity-manager';
 
 import { entitiesSelector, makeReadThunk } from '../utils';
 
 import { ConnectedForm } from './form/Form';
 import { Grid } from './grid/Grid';
-import { readStatusSelector, Status } from 'redux-entity-manager';
 
 const makeUserSlug = name => {
     return name
         ? name.split(' ').map(s => s.toLowerCase()).join('-')
+        : '';
+};
+
+const makeUserAvatar = name => {
+    return name
+        ? name.split(' ').map(s => s.slice(0, 1)).join('')
         : '';
 };
 
@@ -99,13 +110,23 @@ class Layout extends Component {
                         <Button color="inherit" component={Link} to="/posts">
                             All Posts
                         </Button>
-                        {users.slice(0, 5).map((user, i) => {
-                            return <Button key={i} color="inherit" component={Link} to={`/posts/${makeUserSlug(user.name)}`}>
-                                {user.name}'s posts
-                            </Button>;
-                        })}
                     </Toolbar>
                 </AppBar>
+                <nav style={{ width: 1200, margin: '32px auto' }}>
+                    <span style={{ display: 'inline-block', marginRight: '8px' }}>First five users:</span>
+                    {users.slice(0, 5).map((user, i) => {
+                        const { name } = user;
+                        return <Chip
+                            key={i}
+                            clickable
+                            avatar={<Avatar>{makeUserAvatar(name)}</Avatar>}
+                            label={name}
+                            component={Link}
+                            to={`/posts/${makeUserSlug(name)}`}
+                            style={{ marginRight: '8px' }}
+                        />
+                    })}
+                </nav>
                 <main>
                     {status === Status.SUCCESS && <Switch>
                         <Route
