@@ -88,9 +88,19 @@ const userFormFields = [
     },
 ];
 
-const navigateToUser = props => user => props.history.push(`/users/${user.id}`);
+const navigateToUser = props => user => {
+    const url = user
+        ? `/users/${user.id}`
+        : '/users/create';
+    props.history.push(url);
+};
 
-const navigateToPost = props => post => props.history.push(`/posts/${post.id}`);
+const navigateToPost = props => post => {
+    const url = post
+        ? `/posts/${post.id}`
+        : '/posts/create';
+    props.history.push(url);
+};
 
 class Layout extends Component {
 
@@ -132,14 +142,30 @@ class Layout extends Component {
                         <Route
                             path="/posts"
                             exact={true}
-                            render={props => <Grid {...props} entityName="post" query={null} columns={postGridColumns} onDoubleClick={navigateToPost(props)} />}
+                            render={props => <Grid
+                                {...props}
+                                entityName="post"
+                                query={null}
+                                columns={postGridColumns}
+                                onDoubleClick={navigateToPost(props)}
+                                onCreate={navigateToPost(props)}
+                                onEdit={navigateToPost(props)}
+                            />}
                         />
                         {users.map((user, i) => {
                             return <Route
                                 key={i}
                                 path={`/posts/${makeUserSlug(user.name)}`}
                                 exact={true}
-                                render={props => <Grid {...props} entityName="post" query={{ userId: user.id }} columns={postGridColumns} onDoubleClick={navigateToPost(props)} />}
+                                render={props => <Grid
+                                    {...props}
+                                    entityName="post"
+                                    query={{ userId: user.id }}
+                                    columns={postGridColumns}
+                                    onDoubleClick={navigateToPost(props)}
+                                    onCreate={navigateToPost(props)}
+                                    onEdit={navigateToPost(props)}
+                                />}
                             />;
                         })}
                         <Route
@@ -155,7 +181,15 @@ class Layout extends Component {
                         <Route
                             path="/users"
                             exact={true}
-                            render={props => <Grid {...props} entityName="user" query={null} columns={userGridColumns} onDoubleClick={navigateToUser(props)} />}
+                            render={props => <Grid
+                                {...props}
+                                entityName="user"
+                                query={null}
+                                columns={userGridColumns}
+                                onDoubleClick={navigateToUser(props)}
+                                onCreate={navigateToUser(props)}
+                                onEdit={navigateToUser(props)}
+                            />}
                         />
                         <Route
                             path="/users/create"

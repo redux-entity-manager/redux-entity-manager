@@ -1,27 +1,32 @@
 import { Formik } from 'formik';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    TextField,
+    Typography,
+} from '@material-ui/core';
 
 import { updateStatusSelector, Status, readStatusSelector } from 'redux-entity-manager';
 
-import { entitiesSelector, makeReadThunk, makeUpdateThunk } from '../../utils';
+import { entitiesSelector, makeReadThunk, makeUpdateThunk, makeCreateThunk } from '../../utils';
 
 import { ConnectedSelect } from './Select';
 
 class Form extends Component {
 
     componentDidMount() {
-        this.props.read();
+        const { query, read } = this.props;
+        if (query && query.id) {
+            read();
+        }
     }
 
     render() {
-        const { fields, items, updateStatus, readStatus } = this.props;
+        const { fields, items, updateStatus, readStatus, query } = this.props;
         const disabled = updateStatus === Status.PENDING || readStatus === Status.PENDING;
         const defaultValues = fields.reduce((acc, field) => ({ ...acc, [field.key]: '' }), {});
         return (
@@ -51,7 +56,11 @@ class Form extends Component {
                         initialValues={items && items[0] ? { ...defaultValues, ...items[0] } : defaultValues}
                         enableReinitialize={true}
                         onSubmit={(values, { setSubmitting }) => {
-                            this.props.update(values);
+                            if (query && query.id) {
+                                this.props.update(values);
+                            } else {
+                                this.props.create(values);
+                            }
                             setSubmitting(false);
                         }}
                     >
@@ -65,7 +74,7 @@ class Form extends Component {
                                 <fieldset style={{ border: 'none' }} disabled={disabled}>
                                     <CardContent>
                                         <Typography gutterBottom variant="h4" component="h1">
-                                            Edit
+                                            {query && query.id ? 'Edit' : 'Create'}
                                         </Typography>
                                         {fields.map((field, i) => {
                                             return (
@@ -121,6 +130,7 @@ const makeMapState = () => (state, { entityName, query }) => ({
 
 const makeMapDispatch = () => (dispatch, { entityName, query }) => ({
     read: () => dispatch(makeReadThunk(entityName, query)),
+    create: item => dispatch(makeCreateThunk(entityName, query, item)),
     update: item => dispatch(makeUpdateThunk(entityName, query, item)),
 });
 

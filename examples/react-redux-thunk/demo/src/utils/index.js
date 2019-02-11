@@ -4,6 +4,8 @@ import {
     indexItemsCombiner,
     indexSelector,
     itemsSelector,
+    makeCreateRequestAction,
+    makeCreateSuccessAction,
     makeReadRequestAction,
     makeReadSuccessAction,
     makeShouldReadCombiner,
@@ -71,6 +73,22 @@ export const makeReadThunk = (entityName, query) => (dispatch, getState) => {
                 dispatch(makeReadSuccessAction(entityName, query, items, null, metadata));
             });
     }
+};
+
+export const makeCreateThunk = (entityName, query, item) => dispatch => {
+    const url = makeUrl(entityName, query);
+    dispatch(makeCreateRequestAction(entityName, query, [item]));
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(item),
+    })
+        .then(response => response.json())
+        .then(() => {
+            dispatch(makeCreateSuccessAction(entityName, query, [item]));
+        });
 };
 
 export const makeUpdateThunk = (entityName, query, item) => dispatch => {

@@ -74,6 +74,9 @@ export class Grid extends Component {
     }
 
     onEdit() {
-        this.props.onEdit(this.state.selectedId);
+        const { selectedId } = this.state;
+        if (selectedId) {
+            this.props.onEdit(selectedId);
+        }
     }
 }
