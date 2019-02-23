@@ -41,8 +41,9 @@ const postGridColumns = [
         key: 'userId',
         label: 'User',
         entityName: 'user',
-        query: item => ({ id: item.userId }),
+        query: null,
         labelKey: 'name',
+        valueKey: 'id',
     },
 ];
 
@@ -123,8 +124,8 @@ class Layout extends Component {
                     </Toolbar>
                 </AppBar>
                 <nav style={{ width: 1200, margin: '32px auto' }}>
-                    <span style={{ display: 'inline-block', marginRight: '8px' }}>First five users:</span>
-                    {users.slice(0, 5).map((user, i) => {
+                    <span style={{ display: 'inline-block', marginRight: '8px' }}>First three users:</span>
+                    {users.slice(0, 3).map((user, i) => {
                         const { name } = user;
                         return <Chip
                             key={i}

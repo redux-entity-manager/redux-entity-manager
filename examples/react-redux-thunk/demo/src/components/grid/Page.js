@@ -95,7 +95,13 @@ class Page extends Component {
                                 {columns.map((column, key) => (
                                     <TableCell key={key}>
                                         {column.entityName
-                                            ? <ConnectedRenderer entityName={column.entityName} query={column.query(item)} labelKey={column.labelKey} />
+                                            ? <ConnectedRenderer
+                                                entityName={column.entityName}
+                                                query={column.query}
+                                                labelKey={column.labelKey}
+                                                valueKey={column.valueKey}
+                                                value={item[column.key]}
+                                            />
                                             : item[column.key]
                                         }
                                     </TableCell>

@@ -12,9 +12,10 @@ class Renderer extends Component {
     }
 
     render() {
-        return this.props.status === Status.PENDING
+        const { items, valueKey, labelKey, value, status } = this.props;
+        return status === Status.PENDING
             ? 'Loading...'
-            : <span>{this.props.items[0] && this.props.items[0][this.props.labelKey]}</span>;
+            : <span>{items && items.find(item => item[valueKey] === value)[labelKey]}</span>;
     }
 }
 
