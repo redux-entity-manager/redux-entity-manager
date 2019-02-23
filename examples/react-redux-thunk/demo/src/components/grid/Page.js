@@ -44,7 +44,7 @@ class Page extends Component {
         const nPages = Math.ceil(total / limit);
         return (
             <div>
-                <Toolbar>
+                <Toolbar style={{ padding: 0 }}>
                     <Tooltip title="Add">
                         <div>
                             <IconButton aria-label="Add" onClick={() => this.props.onCreate()}>

@@ -123,8 +123,8 @@ class Layout extends Component {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <nav style={{ width: 1200, margin: '32px auto' }}>
-                    <span style={{ display: 'inline-block', marginRight: '8px' }}>First three users:</span>
+                <nav style={{ margin: 32 }}>
+                    <span style={{ display: 'inline-block', marginRight: '8px' }}>First three users' posts:</span>
                     {users.slice(0, 3).map((user, i) => {
                         const { name } = user;
                         return <Chip

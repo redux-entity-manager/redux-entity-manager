@@ -27,7 +27,7 @@ export class Grid extends Component {
 
     render() {
         return (
-            <Card style={{ width: 1200, margin: '32px auto' }}>
+            <Card style={{ margin: 32 }}>
                 <CardContent>
                     <ConnectedPage
                         {...this.props}

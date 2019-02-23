@@ -25,7 +25,7 @@ const makeMapState = () => (state, { entityName, query }) => ({
 });
 
 const makeMapDispatch = () => (dispatch, { entityName, query }) => ({
-    read: () => dispatch(makeReadThunk(entityName, query)),
+    read: () => dispatch(makeReadThunk(entityName, query, true)),
 });
 
 export const ConnectedRenderer = connect(makeMapState, makeMapDispatch)(Renderer);

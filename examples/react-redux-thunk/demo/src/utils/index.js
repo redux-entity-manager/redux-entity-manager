@@ -49,9 +49,9 @@ const makeUrl = (entityName, query) => {
         : baseUrl;
 };
 
-export const makeReadThunk = (entityName, query) => (dispatch, getState) => {
+export const makeReadThunk = (entityName, query, useCache = false) => (dispatch, getState) => {
     const state = getState();
-    const shouldRead = shouldReadSelector(state, { entityName, query });
+    const shouldRead = !useCache && shouldReadSelector(state, { entityName, query });
     if (shouldRead) {
         const url = makeUrl(entityName, query);
         dispatch(makeReadRequestAction(entityName, query));

@@ -31,7 +31,7 @@ class Form extends Component {
         const defaultValues = fields.reduce((acc, field) => ({ ...acc, [field.key]: '' }), {});
         return (
             <div>
-                {!process.env.REACT_APP_LOCAL && <Card style={{ width: 480, margin: '36px auto' }}>
+                {!process.env.REACT_APP_LOCAL && <Card style={{ width: 480, margin: '32px auto' }}>
                     <CardContent>
                         <Typography variant="body2" gutterBottom>
                             This demo uses fake server.
@@ -51,7 +51,7 @@ class Form extends Component {
                         </Typography>
                     </CardContent>
                 </Card>}
-                <Card style={{ width: 480, margin: '36px auto' }}>
+                <Card style={{ width: 480, margin: '32px auto' }}>
                     <Formik
                         initialValues={items && items[0] ? { ...defaultValues, ...items[0] } : defaultValues}
                         enableReinitialize={true}
