@@ -14,7 +14,7 @@ export class Grid extends Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const { hash } = this.props.location;
         const [page, selectedId] = hash.substr(1).split(',').map(Number);
         if (page) {
