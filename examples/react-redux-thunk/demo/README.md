@@ -50,8 +50,9 @@ Similarly, `Form` featured configurable fields and related entity select compone
 ```js
 <ConnectedRenderer
     entityName="user"
-    query={{ id: 1 }}
+    query={null}
     labelKey="name"
+    valueKey="id"
 />
 ```
 
@@ -65,8 +66,9 @@ Similarly, `Form` featured configurable fields and related entity select compone
             key: 'userId',
             label: 'User',
             entityName: 'user',
-            query: item => ({ id: item.userId }),
+            query: null,
             labelKey: 'name',
+            valueKey: 'id',
         },
         ...
     ]}
