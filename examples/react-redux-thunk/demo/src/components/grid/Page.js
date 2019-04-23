@@ -89,7 +89,7 @@ class Page extends Component {
                                 key={i}
                                 hover
                                 onClick={() => onSelect(item[config.primaryKey])}
-                                onDoubleClick={() => this.props.onDoubleClick(item)}
+                                onDoubleClick={() => this.props.onDoubleClick(item[config.primaryKey])}
                                 selected={selectedId === item[config.primaryKey]}
                             >
                                 {columns.map((column, key) => (

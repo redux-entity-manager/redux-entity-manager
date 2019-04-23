@@ -89,16 +89,16 @@ const userFormFields = [
     },
 ];
 
-const navigateToUser = props => user => {
-    const url = user
-        ? `/users/${user.id}`
+const navigateToUser = props => userId => {
+    const url = userId
+        ? `/users/${userId}`
         : '/users/create';
     props.history.push(url);
 };
 
-const navigateToPost = props => post => {
-    const url = post
-        ? `/posts/${post.id}`
+const navigateToPost = props => postId => {
+    const url = postId
+        ? `/posts/${postId}`
         : '/posts/create';
     props.history.push(url);
 };
